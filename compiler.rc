@@ -1,0 +1,12 @@
+#!/usr/bin/env rc
+# Compile zcat avec tcc (zlib comprise), le vérifie et l'installe dans
+# /usr/local/bin/zcat (avant /usr/bin/zcat de gzip dans le PATH).
+# Usage : ./compiler.rc
+flag e +
+if(test -d /usr/lib/plan9/bin) path=(/usr/lib/plan9/bin $path)
+cd `{basename -d $0}
+tcc -O2 -o zcat.nouveau zcat.c zlib/adler32.c zlib/crc32.c zlib/inffast.c zlib/inflate.c zlib/inftrees.c zlib/zutil.c
+./essai.rc `{pwd}^/zcat.nouveau
+sudo install -m 755 zcat.nouveau /usr/local/bin/zcat
+rm zcat.nouveau
+echo installé : /usr/local/bin/zcat

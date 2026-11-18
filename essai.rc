@@ -1,0 +1,23 @@
+#!/usr/bin/env rc
+# Vérifie un binaire zcat : fichier, entrée standard, membres enchaînés,
+# refus d'un fichier tronqué ou qui n'est pas du gzip. Les fichiers gzip
+# d'essai sont dans essai/ (faits une fois avec gzip).
+# Usage : ./essai.rc <binaire>
+flag e +
+if(test -d /usr/lib/plan9/bin) path=(/usr/lib/plan9/bin $path)
+z=$1
+cd `{basename -d $0}^/essai
+fn attendu {
+	~ $"r $2 || { echo $1 : obtenu « $"r », attendu « $2 » >[1=2]; exit $1 }
+}
+r=`{$z texte.gz}
+attendu fichier 'ligne é deuxième ligne'
+r=`{cat texte.gz | $z}
+attendu entree 'ligne é deuxième ligne'
+r=`{$z deux.gz}
+attendu membres 'un deux'
+r=`{$z tronque.gz >/dev/null >[2]/dev/null || echo refusé}
+attendu tronque refusé
+r=`{$z texte.txt >/dev/null >[2]/dev/null || echo refusé}
+attendu pas-gzip refusé
+echo $z : essai réussi
