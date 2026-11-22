@@ -6,6 +6,17 @@
 - `zlib/` : fichiers de zlib 1.4 nécessaires à la décompression, sans modification (licence zlib, `zlib/LICENSE`).
 - `essai.rc <binaire>` : vérifie un exécutable de zcat. `<binaire>` est le chemin complet du zcat à essayer (par exemple `./essai.rc /usr/local/bin/zcat`), complet car l'essai se place dans `essai/`, où sont ses fichiers gzip. Il vérifie que zcat décompresse un fichier donné en argument et l'entrée standard, qu'il enchaîne les membres d'un fichier fait de plusieurs gzip mis bout à bout (comme `cat a.gz b.gz`), et qu'il échoue (code de sortie 1) sur un fichier tronqué ou qui n'est pas du gzip. Il affiche `essai réussi`, ou le point en échec.
 
+## Paquets Debian et Fedora
+
+Les [Releases](https://github.com/glads-code/zcat/releases) contiennent un `.deb` (Debian 13) et un `.rpm` (Fedora 43), compilés avec gcc :
+
+    sudo apt install ./tzcat_1.0-1_amd64.deb             # Debian
+    sudo dnf install ./tzcat-1.0-1.fc43.x86_64.rpm       # Fedora
+
+Le paquet installe `/usr/bin/tzcat` : renommé pour ne pas remplacer le `zcat` de gzip (même usage).
+
+Pour les reconstruire : `./paquets.rc [version]` (Docker, conteneurs `debian:13` et `fedora:43` jetables ; résultat dans `dist/`). Le `.deb` passe `essai.rc` ; Fedora n'ayant pas le rc de Plan 9, le `.rpm` vérifie les mêmes points en sh (`%check` de `paquets/tzcat.spec`).
+
 ## Installer sous Debian 13
 
     sudo apt install git tcc 9base

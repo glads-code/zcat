@@ -1,0 +1,14 @@
+#!/usr/bin/env rc
+# Construit les paquets .deb (Debian 13) et .rpm (Fedora 43) de zcat (paquet tzcat) dans
+# des conteneurs Docker jetables ; résultat dans dist/.
+# Usage : ./paquets.rc [version]
+flag e +
+if(test -d /usr/lib/plan9/bin) path=(/usr/lib/plan9/bin $path)
+cd `{basename -d $0}
+v=1.0
+if(~ $#* 1) v=$1
+rm -rf dist
+mkdir dist
+docker run --rm -v `{pwd}^:/src:ro -v `{pwd}^/dist:/dist debian:13 sh /src/paquets/construire.sh deb $v
+docker run --rm -v `{pwd}^:/src:ro -v `{pwd}^/dist:/dist fedora:43 sh /src/paquets/construire.sh rpm $v
+ls dist
