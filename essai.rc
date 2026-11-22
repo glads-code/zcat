@@ -16,8 +16,9 @@ r=`{cat texte.gz | $z}
 attendu entree 'ligne é deuxième ligne'
 r=`{$z deux.gz}
 attendu membres 'un deux'
-r=`{$z tronque.gz >/dev/null >[2]/dev/null || echo refusé}
+r=`{$z tronque.gz > sortie.tmp >[2]erreur.tmp || echo refusé}
 attendu tronque refusé
-r=`{$z texte.txt >/dev/null >[2]/dev/null || echo refusé}
+r=`{$z texte.txt > sortie.tmp >[2]erreur.tmp || echo refusé}
 attendu pas-gzip refusé
+rm -f sortie.tmp erreur.tmp
 echo $z : essai réussi
