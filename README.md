@@ -17,3 +17,7 @@ C:\tcc\tcc.exe -O2 -o C:\outils\zcat.exe zcat.c zlib\adler32.c zlib\crc32.c zlib
 ```
 
 Sorties identiques à `gzip -dc` sur les données de dvf (BAN, contours, géolocalisation DVF), sous Linux et sous Windows. Environ 1,5 fois plus lent que gzip (tcc optimise moins que gcc) : 37 s au lieu de 25 s pour la BAN.
+
+## Support
+
+Dépôt publié tel quel, pour nos propres besoins : pas de support, les issues et pull requests ne sont pas suivies.
