@@ -17,23 +17,19 @@
 
 ## Installer sous Windows
 
-Compiler `zcat.exe` (64 bits, sans DLL) sous Debian 13 avec le tcc croisé, qui se construit une fois depuis les sources de tinycc (dossier attendu par défaut : `~/.cache/wak-src/tinycc`, autre dossier en argument) :
+Prérequis : tcc récent dans `C:\tcc-dev`, voir [Installer tcc sous Windows](https://github.com/glads-code/rcsh#installer-tcc-sous-windows) (README de rcsh) ; pour l'essai, 9pm et le rcsh corrigé (même README). Dans PowerShell :
 
-    sudo apt install git gcc make 9base
-    git clone https://repo.or.cz/tinycc.git ~/.cache/wak-src/tinycc
-    cd ~/.cache/wak-src/tinycc
-    ./configure --targetos=WIN32 --cpu=x86_64 --enable-cross
-    make cross-x86_64-win32 cross-i386-win32
-
-Puis, dans le dépôt zcat : `./compiler-windows.rc`.
-
-Ou directement sous Windows, avec [tcc pour Windows](https://download.savannah.gnu.org/releases/tinycc/) extrait dans `C:\tcc` :
-
-```
-C:\tcc\tcc.exe -O2 -o zcat.exe zcat.c zlib\adler32.c zlib\crc32.c zlib\inffast.c zlib\inflate.c zlib\inftrees.c zlib\zutil.c
+```powershell
+cd $env:USERPROFILE
+curl.exe -Lo zcat.zip https://github.com/glads-code/zcat/archive/refs/heads/main.zip
+tar -xf zcat.zip
+cd zcat-main
+C:\tcc-dev\tcc.exe -O2 -o zcat.exe zcat.c zlib\adler32.c zlib\crc32.c zlib\inffast.c zlib\inflate.c zlib\inftrees.c zlib\zutil.c
+Copy-Item zcat.exe C:\9pm\bin\          # ou tout autre dossier du PATH
+cmd /c "rcsh essai.rc C:/9pm/bin/zcat.exe < NUL"   # chemin complet : l'essai change de dossier
 ```
 
-Copier `zcat.exe` dans un dossier du `PATH`. Vérifier avec le [rcsh](https://github.com/glads-code/rcsh) corrigé, dans le dépôt, avec le chemin complet du binaire : `rcsh essai.rc C:/outils/zcat.exe < NUL`.
+`zcat.exe` : 64 bits, sans DLL.
 
 Sorties identiques à `gzip -dc` sur de gros jeux de données ouverts (Base adresse nationale, fichiers de plusieurs Go), sous Linux et sous Windows. Environ 1,5 fois plus lent que gzip (tcc optimise moins que gcc) : 37 s au lieu de 25 s pour la Base adresse nationale.
 
