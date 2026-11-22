@@ -4,7 +4,7 @@
 
 - `zcat.c` : le programme (licence 0BSD, `LICENSE`) (membres gzip enchaînés acceptés ; sortie 1 sur fichier tronqué, données corrompues ou erreur d'écriture, après avoir écrit la partie lisible, comme gzip).
 - `zlib/` : fichiers de zlib 1.4 nécessaires à la décompression, sans modification (licence zlib, `zlib/LICENSE`).
-- `essai.rc <binaire>` : fichier, entrée standard, membres enchaînés, refus d'un fichier tronqué et d'un fichier qui n'est pas du gzip (fichiers d'essai dans `essai/`).
+- `essai.rc <binaire>` : vérifie un exécutable de zcat. `<binaire>` est le chemin complet du zcat à essayer (par exemple `./essai.rc /usr/local/bin/zcat`), complet car l'essai se place dans `essai/`, où sont ses fichiers gzip. Il vérifie que zcat décompresse un fichier donné en argument et l'entrée standard, qu'il enchaîne les membres d'un fichier fait de plusieurs gzip mis bout à bout (comme `cat a.gz b.gz`), et qu'il échoue (code de sortie 1) sur un fichier tronqué ou qui n'est pas du gzip. Il affiche `essai réussi`, ou le point en échec.
 
 ## Installer sous Debian 13
 
@@ -16,6 +16,8 @@
 `./compiler.rc` compile avec tcc, lance l'essai et installe `/usr/local/bin/zcat` (devant le `zcat` de gzip dans le PATH, même usage).
 
 ## Installer sous Windows
+
+Binaire prêt à l'emploi : `zcat.exe` dans les [Releases](https://github.com/glads-code/zcat/releases) (compilé sous Windows 11 selon la procédure ci-dessous, empreinte SHA-256 dans les notes de version). Le copier dans un dossier du `PATH` suffit. Pour le compiler soi-même :
 
 Prérequis : tcc récent dans `C:\tcc-dev`, voir [Installer tcc sous Windows](https://github.com/glads-code/rcsh#installer-tcc-sous-windows) (README de rcsh) ; pour l'essai, 9pm et le rcsh corrigé (même README). Dans PowerShell :
 
